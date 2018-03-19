@@ -145,7 +145,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 		is_initialized_ = true;
 	}
 
-	double delta_t = (meas_package.timestamp_ - time_us_) / 1000000.0;
+	long long delta_t = (meas_package.timestamp_ - time_us_) / 1000000.0;
 	time_us_ = meas_package.timestamp_;
 
 	Prediction(delta_t);
@@ -154,7 +154,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	{
 		UpdateRadar(meas_package);
 	}
-	else if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_ == true)
+	else if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_)
 	{
 		UpdateLidar(meas_package);
 	}
@@ -180,8 +180,8 @@ void UKF::Prediction(double delta_t) {
 	Xsig.col(0) = x_;
 	for (unsigned int i = 1; i < n_x_ + 1; ++i)
 	{
-		Xsig.col(i) = x_ + sqrt(lambda_ + n_x_)*A.col(i);
-		Xsig.col(i + n_x_) = x_ - sqrt(lambda_ + n_x_)*A.col(i);
+		Xsig.col(i) = x_ + sqrt(lambda_ + n_x_)*A.col(i-1);
+		Xsig.col(i + n_x_) = x_ - sqrt(lambda_ + n_x_)*A.col(i-1);
 	}
 
 	// generating augumented points
@@ -202,8 +202,8 @@ void UKF::Prediction(double delta_t) {
 	Xsig_aug.col(0) = x_aug;
 	for (unsigned int i = 1; i < n_aug_ + 1; ++i)
 	{
-		Xsig_aug.col(i) = x_aug + sqrt(lambda_ + n_aug_)*L.col(i);
-		Xsig_aug.col(i + n_aug_) = x_aug - sqrt(lambda_ + n_aug_)*L.col(i);
+		Xsig_aug.col(i) = x_aug + sqrt(lambda_ + n_aug_)*L.col(i-1);
+		Xsig_aug.col(i + n_aug_) = x_aug - sqrt(lambda_ + n_aug_)*L.col(i-1);
 	}
 
 	//sigma point prediction assignment
