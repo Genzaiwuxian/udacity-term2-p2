@@ -181,7 +181,7 @@ void UKF::Prediction(double delta_t) {
 	for (unsigned int i = 1; i < n_x_ + 1; ++i)
 	{
 		Xsig.col(i) = x_ + sqrt(lambda_ + n_x_)*A.col(i);
-		Xsig.col(i + n_x_) = x_ - sqrt(lambda + n_x_)*A.col(i);
+		Xsig.col(i + n_x_) = x_ - sqrt(lambda_ + n_x_)*A.col(i);
 	}
 
 	// generating augumented points
