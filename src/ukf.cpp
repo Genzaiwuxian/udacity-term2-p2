@@ -309,7 +309,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 		z_diff = Zsig.col(i) - Z_pred;
 
 		VectorXd x_diff = VectorXd(n_x_);
-		x_diff = Xsig_pred_(i) - x_;
+		x_diff = Xsig_pred_.col(i) - x_;
 
 		Tc += weights_(i)*x_diff*z_diff.transpose();
 	}
@@ -408,7 +408,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 		else if (z_diff(1) > M_PI) z_diff(1) -= 2 * M_PI;
 
 		VectorXd x_diff = VectorXd(n_x_);
-		x_diff = Xsig_pred_(i) - x_;
+		x_diff = Xsig_pred_.col(i) - x_;
 		if (x_diff(3) < -M_PI) x_diff(3) += 2 * M_PI;
 		else if (x_diff(3) > M_PI) x_diff(3) -= 2 * M_PI;
 
