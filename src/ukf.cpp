@@ -93,6 +93,9 @@ UKF::UKF() {
 	  double weights = 0.5 / (lambda_ + n_aug_);
 	  weights_(i) = weights;
   }
+
+  // lambda for augmentation
+  lambda_aug = 3 - n_aug_;
  
 }
 
@@ -145,7 +148,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 		is_initialized_ = true;
 	}
 
-	long long delta_t = (meas_package.timestamp_ - time_us_) / 1000000.0;
+	double delta_t = (meas_package.timestamp_ - time_us_) / 1000000.0;
 	time_us_ = meas_package.timestamp_;
 
 	Prediction(delta_t);
@@ -202,8 +205,8 @@ void UKF::Prediction(double delta_t) {
 	Xsig_aug.col(0) = x_aug;
 	for (unsigned int i = 1; i < n_aug_ + 1; ++i)
 	{
-		Xsig_aug.col(i) = x_aug + sqrt(lambda_ + n_aug_)*L.col(i-1);
-		Xsig_aug.col(i + n_aug_) = x_aug - sqrt(lambda_ + n_aug_)*L.col(i-1);
+		Xsig_aug.col(i) = x_aug + sqrt(lambda_aug + n_aug_)*L.col(i-1);
+		Xsig_aug.col(i + n_aug_) = x_aug - sqrt(lambda_aug + n_aug_)*L.col(i-1);
 	}
 
 	//sigma point prediction assignment
