@@ -98,7 +98,6 @@ UKF::UKF() {
   }
  
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
-  Xsig_pred_.fill(0.0);
 }
 
 UKF::~UKF() {}
@@ -223,7 +222,9 @@ void UKF::Prediction(double delta_t) {
 		Xsig_aug.col(i + n_aug_) = x_aug - sqrt(lambda_aug + n_aug_)*L.col(i-1);
 	}
 
+
 	//sigma point prediction assignment
+	Xsig_pred_.fill(0.0);
 	for (unsigned int i = 0; i < 2 * n_aug_ + 1; ++i)
 	{
 		double p_x = Xsig_aug(0, i);
