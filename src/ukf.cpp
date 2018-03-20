@@ -233,7 +233,7 @@ void UKF::Prediction(double delta_t) {
 
 		double px_p, py_p, v_p, yaw_p, yawd_p;
 
-		if (fabs(yaw_dot) < 0.0000001)
+		if (fabs(yaw_dot) < 0.001)
 		{
 			px_p = p_x + v * cos(yaw)*delta_t + 0.5*delta_t*delta_t*cos(yaw)*std_a;
 			py_p = p_y + v * sin(yaw)*delta_t + 0.5*delta_t*delta_t*sin(yaw)*std_a;
