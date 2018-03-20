@@ -266,6 +266,9 @@ void UKF::Prediction(double delta_t) {
 
 		P_ += weights_(i)*diff*diff.transpose();
 	}
+	cout << "x_ prediction is: " << x_ << endl;
+	cout << "P_ prediction is: " << P_ << endl;
+	cout << "____________________" << endl;
 }
 
 /**
@@ -342,7 +345,10 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	//Normalized innovation squared (NIS)
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
-	cout << "NIS is: " << NIS << endl;
+	// cout << "NIS is: " << NIS << endl;
+	cout << "x_ laser update is: " << x_ << endl;
+	cout << "P_ laser update is: " << P_ << endl;
+	cout << "____________________" << endl;
 }
 
 /**
@@ -445,6 +451,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	//Normalized innovation squared (NIS)
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
-	cout << "NIS is: " << NIS << endl;
-
+	// cout << "NIS is: " << NIS << endl;
+	cout << "x_ radar update is: " << x_ << endl;
+	cout << "P_ radar update is: " << P_ << endl;
+	cout << "____________________" << endl;
 }
