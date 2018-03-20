@@ -254,6 +254,11 @@ void UKF::Prediction(double delta_t) {
 	{
 		VectorXd diff = VectorXd(n_x_);
 		diff = Xsig_pred_.col(i) - x_;
+		if (diff(3) < -M_PI)
+			diff(3) += 2 * M_PI;
+		else if (diff(3) > M_PI)
+			diff(3) -= 2 * M_PI;
+
 		P_ += weights_(i)*diff*diff.transpose();
 	}
 }
