@@ -16,7 +16,7 @@ UKF::UKF() {
   use_laser_ = true;
 
   // if this is false, radar measurements will be ignored (except during init)
-  use_radar_ = false;
+  use_radar_ = true;
 
   // initial state vector
   x_ = VectorXd(5);
@@ -81,21 +81,21 @@ UKF::UKF() {
   // tuning parameters, as udacity lession said, lambda choose 3_n_x_ will get a good result
   lambda_ = 3 - n_x_;
 
+  // lambda for augmentation
+  lambda_aug = 3 - n_aug_;
+
   //weights for calculating x_k+1 and P_k+1
   weights_ = VectorXd(2 * n_aug_ + 1);
 
-  double weights_0 = lambda_ / (lambda_ + n_aug_);
+  double weights_0 = lambda_aug / (lambda_aug + n_aug_);
 
   weights_(0) = weights_0;
 
   for (int i = 1; i < 2 * n_aug_ + 1; ++i)
   {
-	  double weights = 0.5 / (lambda_ + n_aug_);
+	  double weights = 0.5 / (lambda_aug + n_aug_);
 	  weights_(i) = weights;
   }
-
-  // lambda for augmentation
-  lambda_aug = 3 - n_aug_;
  
 }
 
