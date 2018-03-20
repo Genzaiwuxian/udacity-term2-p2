@@ -161,6 +161,9 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
 	double delta_t = (meas_package.timestamp_ - time_us_) / 1000000.0;
 	time_us_ = meas_package.timestamp_;
+	
+	cout << "dt: " << endl;
+	cout << delta_t << endl;
 
 	Prediction(delta_t);
 
@@ -255,11 +258,13 @@ void UKF::Prediction(double delta_t) {
 	}
 
 	//predicted mean and covariance
+	x_.fill(0.0);
 	for (unsigned int i = 1; i < 2 * n_aug_ + 1; ++i)
 	{
 		x_ += weights_(i)*Xsig_pred_.col(i);
 	}
 
+	P_.fill(0.0);
 	for (unsigned int i = 0; i < 2 * n_aug_ + 1; ++i)
 	{
 		VectorXd diff = VectorXd(n_x_);
