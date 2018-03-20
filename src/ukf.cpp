@@ -70,7 +70,7 @@ UKF::UKF() {
   is_initialized_ = false;
 
   //current time set as 0
-  time_us_ = 0;
+  time_us_ = 0.0;
 
   //dimension of state is 5: px, py, v, phi, phi_dot
   n_x_ = 5;
@@ -97,6 +97,7 @@ UKF::UKF() {
 	  weights_(i) = weights;
   }
  
+  Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
 }
 
 UKF::~UKF() {}
@@ -114,14 +115,15 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   */
 	if (!is_initialized_)
 	{
-		cout << "EKF: " << endl;
-		x_ << 1, 1, 1, 1, 1;
-		if (meas_package.sensor_type_ == MeasurementPackage::LASER)
+		cout << "UKF: " << endl;
+		x_ << 1, 1, 1, 1, 0.1;
+		if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_)
 		{
 			float p_x, p_y;
 			p_x = meas_package.raw_measurements_(0);
 			p_y = meas_package.raw_measurements_(1);
-			x_ << p_x, p_y, 0, 0, 0;
+			x_(0) = p_x;
+			x_(1) = p_y;
 
 			P_ << 1, 0, 0, 0, 0,
 				0, 1, 0, 0, 0,
@@ -129,23 +131,25 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 				0, 0, 0, 0.1, 0,
 				0, 0, 0, 0, 0.1;
 		}
-		else if (meas_package.sensor_type_ == MeasurementPackage::RADAR)
+		else if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_)
 		{
 			float rho, theta, rho_dot;
 			rho = meas_package.raw_measurements_(0);
 			theta = meas_package.raw_measurements_(1);
 			rho_dot = meas_package.raw_measurements_(2);
-			x_ << rho * cos(theta), rho*sin(theta), 0, theta, 0;
+			x_(0) = rho * cos(theta);
+			x_(1) = rho * sin(theta);
 
 			P_<< 1, 0, 0, 0, 0,
 				0, 1, 0, 0, 0,
 				0, 0, 0.1, 0, 0,
-				0, 0, 0, 1, 0,
+				0, 0, 0, 0.1, 0,
 				0, 0, 0, 0, 0.1;
 		}
 		time_us_ = meas_package.timestamp_;
 
 		is_initialized_ = true;
+		return;
 	}
 
 	double delta_t = (meas_package.timestamp_ - time_us_) / 1000000.0;
@@ -210,7 +214,6 @@ void UKF::Prediction(double delta_t) {
 	}
 
 	//sigma point prediction assignment
-	Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_+1);
 	for (unsigned int i = 0; i < 2 * n_aug_ + 1; ++i)
 	{
 		double p_x = Xsig_aug(0, i);
