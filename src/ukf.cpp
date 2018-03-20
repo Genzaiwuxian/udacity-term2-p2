@@ -275,7 +275,7 @@ void UKF::Prediction(double delta_t) {
 
 	for (unsigned int i = 1; i < 2 * n_aug_ + 1; ++i)
 	{
-		x_ += weights_(i)*Xsig_pred_.col(i);
+		x_ = x_ + weights_(i)*Xsig_pred_.col(i);
 	}
 
 	P_.fill(0.0);
@@ -288,7 +288,7 @@ void UKF::Prediction(double delta_t) {
 		else if (diff(3) > M_PI)
 			diff(3) -= 2 * M_PI;
 
-		P_ += weights_(i)*diff*diff.transpose();
+		P_ =P_ weights_(i)*diff*diff.transpose();
 	}
 	cout << "x_ prediction is: " << endl;
 	cout << x_ << endl;
