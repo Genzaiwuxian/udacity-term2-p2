@@ -208,19 +208,27 @@ void UKF::Prediction(double delta_t) {
 	x_aug.head(5) = x_;
 	x_aug(5) = 0;
 	x_aug(6) = 0;
-	
+	cout << "prediction: x_aug: " << endl;
+	cout << x_aug << endl;
+
+
 	P_aug.fill(0.0);
 	P_aug.topLeftCorner(5, 5) = P_;
 	P_aug(5, 5) = std_a_ * std_a_;
 	P_aug(6, 6) = std_yawdd_ * std_yawdd_;
 	MatrixXd L = P_aug.llt().matrixL();
+	cout << "prediction: P_aug: " << endl;
+	cout << P_aug << endl;
+
 
 	Xsig_aug.col(0) = x_aug;
-	for (unsigned int i = 1; i < n_aug_ + 1; ++i)
+	for (unsigned int i = 0; i < n_aug_; ++i)
 	{
-		Xsig_aug.col(i) = x_aug + sqrt(lambda_aug + n_aug_)*L.col(i-1);
-		Xsig_aug.col(i + n_aug_) = x_aug - sqrt(lambda_aug + n_aug_)*L.col(i-1);
+		Xsig_aug.col(i+1) = x_aug + sqrt(lambda_aug + n_aug_)*L.col(i);
+		Xsig_aug.col(i + n_aug_+1) = x_aug - sqrt(lambda_aug + n_aug_)*L.col(i);
 	}
+	cout << "prediction: Xsig_aug: " << endl;
+	cout << Xsig_aug << endl;
 
 
 	//sigma point prediction assignment
@@ -257,6 +265,8 @@ void UKF::Prediction(double delta_t) {
 		Xsig_pred_(3, i) = yaw_p;
 		Xsig_pred_(4, i) = yawd_p;
 	}
+	cout << "prediction: Xsig_pred_: " << endl;
+	cout << Xsig_pred_ << endl;
 
 	//predicted mean and covariance
 	x_.fill(0.0);
