@@ -270,6 +270,9 @@ void UKF::Prediction(double delta_t) {
 
 	//predicted mean and covariance
 	x_.fill(0.0);
+	cout << "prediction: weights" << endl;
+	cout << weights_ << endl;
+
 	for (unsigned int i = 1; i < 2 * n_aug_ + 1; ++i)
 	{
 		x_ += weights_(i)*Xsig_pred_.col(i);
