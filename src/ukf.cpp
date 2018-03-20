@@ -98,6 +98,7 @@ UKF::UKF() {
   }
  
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
+  Xsig_pred_.fill(0.0);
 }
 
 UKF::~UKF() {}
