@@ -241,7 +241,7 @@ void UKF::Prediction(double delta_t) {
 		else
 		{
 			px_p = p_x + (v / yaw_dot)*(sin(yaw + yaw_dot * delta_t) - sin(yaw)) + 0.5*delta_t*delta_t*cos(yaw)*std_a;
-			py_p = p_y + (v / yaw_dot)*(-cos(yaw + yaw_dot * delta_t) - sin(yaw)) + 0.5*delta_t*delta_t*sin(yaw)*std_a;
+			py_p = p_y + (v / yaw_dot)*(-cos(yaw + yaw_dot * delta_t) + cos(yaw)) + 0.5*delta_t*delta_t*sin(yaw)*std_a;
 		}
 		v_p = v + delta_t * std_a;
 		yaw_p = yaw + yaw_dot * delta_t + 0.5*delta_t*delta_t*std_yaw;
