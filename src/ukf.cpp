@@ -116,8 +116,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	if (!is_initialized_)
 	{
 		cout << "UKF: " << endl;
-		x_ << 1, 1, 1, 1, 0.1;
-		if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_)
+		x_ << 1.0, 1.0, 1.0, 1.0, 0.1;
+		if (meas_package.sensor_type_ == MeasurementPackage::LASER)
 		{
 			float p_x, p_y;
 			p_x = meas_package.raw_measurements_(0);
@@ -125,13 +125,13 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 			x_(0) = p_x;
 			x_(1) = p_y;
 
-			P_ << 1, 0, 0, 0, 0,
-				0, 1, 0, 0, 0,
-				0, 0, 0.1, 0, 0,
-				0, 0, 0, 0.1, 0,
-				0, 0, 0, 0, 0.1;
+			P_ << 1.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 1.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.1, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.1, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.1;
 		}
-		else if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_)
+		else if (meas_package.sensor_type_ == MeasurementPackage::RADAR)
 		{
 			float rho, theta, rho_dot;
 			rho = meas_package.raw_measurements_(0);
@@ -139,12 +139,13 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 			rho_dot = meas_package.raw_measurements_(2);
 			x_(0) = rho * cos(theta);
 			x_(1) = rho * sin(theta);
+			x_(2) = rho_dot;
 
-			P_<< 1, 0, 0, 0, 0,
-				0, 1, 0, 0, 0,
-				0, 0, 0.1, 0, 0,
-				0, 0, 0, 0.1, 0,
-				0, 0, 0, 0, 0.1;
+			P_<< 1.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 1.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.1, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.1, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.1;
 		}
 		time_us_ = meas_package.timestamp_;
 
