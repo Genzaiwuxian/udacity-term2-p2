@@ -151,6 +151,11 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 		time_us_ = meas_package.timestamp_;
 
 		is_initialized_ = true;
+		cout << "x_ 1st prediction is: " << endl;
+		cout << x_ << endl;
+		cout << "P_ 1st prediction is: " << endl;
+		cout << P_ << endl;
+		cout << "____________________" << endl;
 		return;
 	}
 
@@ -266,8 +271,10 @@ void UKF::Prediction(double delta_t) {
 
 		P_ += weights_(i)*diff*diff.transpose();
 	}
-	cout << "x_ prediction is: " << x_ << endl;
-	cout << "P_ prediction is: " << P_ << endl;
+	cout << "x_ prediction is: " << endl;
+	cout << x_ << endl;
+	cout << "P_ prediction is: " << endl;
+	cout << P_ << endl;
 	cout << "____________________" << endl;
 }
 
@@ -346,8 +353,10 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
 	// cout << "NIS is: " << NIS << endl;
-	cout << "x_ laser update is: " << x_ << endl;
-	cout << "P_ laser update is: " << P_ << endl;
+	cout << "x_ laser update is: " << endl;
+	cout << x_ << endl;
+	cout << "P_ laser update is: " << endl;
+	cout << P_ << endl;
 	cout << "____________________" << endl;
 }
 
@@ -452,7 +461,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
 	// cout << "NIS is: " << NIS << endl;
-	cout << "x_ radar update is: " << x_ << endl;
-	cout << "P_ radar update is: " << P_ << endl;
+	cout << "x_ radar update is: " << endl;
+	cout << x_ << endl;
+	cout << "P_ radar update is: " << endl;
+	cout << P_ << endl;
 	cout << "____________________" << endl;
 }
