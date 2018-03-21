@@ -28,7 +28,7 @@ UKF::UKF() {
   std_a_ = 1.414;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 0.1;
+  std_yawdd_ = 0.15;
   
   //DO NOT MODIFY measurement noise values below these are provided by the sensor manufacturer.
   // Laser measurement noise standard deviation position1 in m
@@ -161,8 +161,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	float delta_t = (meas_package.timestamp_ - time_us_) / 1000000.0;
 	time_us_ = meas_package.timestamp_;
 	
-	cout << "dt: " << endl;
-	cout << delta_t << endl;
+	//cout << "dt: " << endl;
+	//cout << delta_t << endl;
 
 	Prediction(delta_t);
 
@@ -208,8 +208,8 @@ void UKF::Prediction(double delta_t) {
 	x_aug.head(5) = x_;
 	x_aug(5) = 0;
 	x_aug(6) = 0;
-	cout << "prediction: x_aug: " << endl;
-	cout << x_aug << endl;
+	//cout << "prediction: x_aug: " << endl;
+	//cout << x_aug << endl;
 
 
 	P_aug.fill(0.0);
@@ -217,8 +217,8 @@ void UKF::Prediction(double delta_t) {
 	P_aug(5, 5) = std_a_ * std_a_;
 	P_aug(6, 6) = std_yawdd_ * std_yawdd_;
 	MatrixXd L = P_aug.llt().matrixL();
-	cout << "prediction: P_aug: " << endl;
-	cout << P_aug << endl;
+	//cout << "prediction: P_aug: " << endl;
+	//cout << P_aug << endl;
 
 
 	Xsig_aug.col(0) = x_aug;
@@ -227,8 +227,8 @@ void UKF::Prediction(double delta_t) {
 		Xsig_aug.col(i+1) = x_aug + sqrt(lambda_aug + n_aug_)*L.col(i);
 		Xsig_aug.col(i + n_aug_+1) = x_aug - sqrt(lambda_aug + n_aug_)*L.col(i);
 	}
-	cout << "prediction: Xsig_aug: " << endl;
-	cout << Xsig_aug << endl;
+	//cout << "prediction: Xsig_aug: " << endl;
+	//cout << Xsig_aug << endl;
 
 
 	//sigma point prediction assignment
@@ -265,13 +265,13 @@ void UKF::Prediction(double delta_t) {
 		Xsig_pred_(3, i) = yaw_p;
 		Xsig_pred_(4, i) = yawd_p;
 	}
-	cout << "prediction: Xsig_pred_: " << endl;
-	cout << Xsig_pred_ << endl;
+	//cout << "prediction: Xsig_pred_: " << endl;
+	//cout << Xsig_pred_ << endl;
 
 	//predicted mean and covariance
 	x_.fill(0.0);
-	cout << "prediction: weights" << endl;
-	cout << weights_ << endl;
+	//cout << "prediction: weights" << endl;
+	//cout << weights_ << endl;
 
 	for (unsigned int i = 0; i < 2 * n_aug_ + 1; ++i)
 	{
@@ -290,11 +290,11 @@ void UKF::Prediction(double delta_t) {
 
 		P_ = P_ + weights_(i)*diff*diff.transpose();
 	}
-	cout << "x_ prediction is: " << endl;
-	cout << x_ << endl;
-	cout << "P_ prediction is: " << endl;
-	cout << P_ << endl;
-	cout << "____________________" << endl;
+	//cout << "x_ prediction is: " << endl;
+	//cout << x_ << endl;
+	//cout << "P_ prediction is: " << endl;
+	//cout << P_ << endl;
+	//cout << "____________________" << endl;
 }
 
 /**
@@ -372,11 +372,11 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
 	// cout << "NIS is: " << NIS << endl;
-	cout << "x_ laser update is: " << endl;
-	cout << x_ << endl;
-	cout << "P_ laser update is: " << endl;
-	cout << P_ << endl;
-	cout << "____________________" << endl;
+	//cout << "x_ laser update is: " << endl;
+	//cout << x_ << endl;
+	//cout << "P_ laser update is: " << endl;
+	//cout << P_ << endl;
+	//cout << "____________________" << endl;
 }
 
 /**
@@ -480,9 +480,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
 	// cout << "NIS is: " << NIS << endl;
-	cout << "x_ radar update is: " << endl;
-	cout << x_ << endl;
-	cout << "P_ radar update is: " << endl;
-	cout << P_ << endl;
-	cout << "____________________" << endl;
+	//cout << "x_ radar update is: " << endl;
+	//cout << x_ << endl;
+	//cout << "P_ radar update is: " << endl;
+	//cout << P_ << endl;
+	//cout << "____________________" << endl;
 }
