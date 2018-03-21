@@ -16,7 +16,7 @@ UKF::UKF() {
   use_laser_ = true;
 
   // if this is false, radar measurements will be ignored (except during init)
-  use_radar_ = false;
+  use_radar_ = true;
 
   // initial state vector
   x_ = VectorXd(5);
@@ -405,15 +405,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 		yaw = Xsig_pred_(3, i);
 
 		rho = sqrt(px*px + py * py);
-		if (fabs(px) < 1.0e-8)
-		{
-			px = 1.0e-8;
-		}
 		theta = atan2(py, px);
-		if (fabs(rho) < 1.0e-8)
-		{
-			rho = 1.0e-8;
-		}
 		rho_dot = (px*cos(yaw)*v + py * sin(yaw)*v) / rho;
 
 		Zsig.col(i) << rho, theta, rho_dot;
