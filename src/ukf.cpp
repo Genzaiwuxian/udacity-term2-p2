@@ -273,7 +273,7 @@ void UKF::Prediction(double delta_t) {
 	cout << "prediction: weights" << endl;
 	cout << weights_ << endl;
 
-	for (unsigned int i = 1; i < 2 * n_aug_ + 1; ++i)
+	for (unsigned int i = 0; i < 2 * n_aug_ + 1; ++i)
 	{
 		x_ = x_ + weights_(i)*Xsig_pred_.col(i);
 	}
