@@ -405,14 +405,14 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 		yaw = Xsig_pred_(3, i);
 
 		rho = sqrt(px*px + py * py);
-		if (fabs(px) < 0.001)
+		if (fabs(px) < 1.0e-8)
 		{
-			px = 0.001;
+			px = 1.0e-8;
 		}
 		theta = atan2(py, px);
-		if (fabs(rho) < 0.0001)
+		if (fabs(rho) < 1.0e-8)
 		{
-			rho = 0.0001;
+			rho = 1.0e-8;
 		}
 		rho_dot = (px*cos(yaw)*v + py * sin(yaw)*v) / rho;
 
