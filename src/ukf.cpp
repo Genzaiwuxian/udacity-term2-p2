@@ -399,6 +399,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   You'll also need to calculate the radar NIS.
   */
 	//predict radar measurment assignments
+	VectorXd x_pre = x_;
+
+	
 	int n_z = 3;
 	MatrixXd Zsig = MatrixXd(n_z, 2 * n_aug_ + 1);
 	Zsig.fill(0.0);
@@ -481,6 +484,19 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	//update state mean and covirance
 	x_ = x_ + K * z_diff;
 	P_ = P_ - K * S*K.transpose();
+
+	//check px&py
+	VectorXd rmse_xy = VectorXd(2);
+	rmse_xy(0) = fabs(x_pre(0) - x_(0));
+	rmse_xy(1) = fabs(x_pre(1) - x_(1));
+	cout << "rmse_xy: " << endl;
+	cout << rmse_xy << endl;
+
+	if (rmse_xy(0) > 2.0 || rmse_xy(1) > 2.0)
+	{
+		x_ = x_pre;
+		return;
+	}
 
 	//Normalized innovation squared (NIS)
 	double NIS;
