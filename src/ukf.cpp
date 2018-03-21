@@ -25,7 +25,7 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 2.5;
+  std_a_ = 1.5;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
   std_yawdd_ = 0.32;
@@ -290,11 +290,11 @@ void UKF::Prediction(double delta_t) {
 
 		P_ = P_ + weights_(i)*diff*diff.transpose();
 	}
-	cout << "x_ prediction is: " << endl;
-	cout << x_ << endl;
-	cout << "P_ prediction is: " << endl;
-	cout << P_ << endl;
-	cout << "____________________" << endl;
+	//cout << "x_ prediction is: " << endl;
+	//cout << x_ << endl;
+	//cout << "P_ prediction is: " << endl;
+	//cout << P_ << endl;
+	//cout << "____________________" << endl;
 }
 
 /**
@@ -377,12 +377,12 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	//Normalized innovation squared (NIS)
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
-	cout << "NIS is: " << NIS << endl;
-	cout << "x_ laser update is: " << endl;
-	cout << x_ << endl;
-	cout << "P_ laser update is: " << endl;
-	cout << P_ << endl;
-	cout << "____________________" << endl;
+	//cout << "NIS is: " << NIS << endl;
+	//cout << "x_ laser update is: " << endl;
+	//cout << x_ << endl;
+	//cout << "P_ laser update is: " << endl;
+	//cout << P_ << endl;
+	//cout << "____________________" << endl;
 }
 
 /**
@@ -489,8 +489,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	VectorXd rmse_xy = VectorXd(2);
 	rmse_xy(0) = fabs(x_pre(0) - x_(0));
 	rmse_xy(1) = fabs(x_pre(1) - x_(1));
-	cout << "rmse_xy: " << endl;
-	cout << rmse_xy << endl;
+	//cout << "rmse_xy: " << endl;
+	//cout << rmse_xy << endl;
 
 	if (rmse_xy(0) > 2.0 || rmse_xy(1) > 2.0)
 	{
@@ -501,10 +501,10 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	//Normalized innovation squared (NIS)
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
-	cout << "NIS is: " << NIS << endl;
-	cout << "x_ radar update is: " << endl;
-	cout << x_ << endl;
-	cout << "P_ radar update is: " << endl;
-	cout << P_ << endl;
-	cout << "____________________" << endl;
+	//cout << "NIS is: " << NIS << endl;
+	//cout << "x_ radar update is: " << endl;
+	//cout << x_ << endl;
+	//cout << "P_ radar update is: " << endl;
+	//cout << P_ << endl;
+	//cout << "____________________" << endl;
 }
