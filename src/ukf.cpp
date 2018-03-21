@@ -310,6 +310,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 
   You'll also need to calculate the lidar NIS.
   */
+	VectorXd x_pre = VectorXd(n_x_);
+	x_pre = x_;
+
 	int n_z = 2;
 	MatrixXd Zsig = MatrixXd(n_z, 2 * n_aug_ + 1);
 	Zsig.fill(0.0);
@@ -368,6 +371,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	x_ = x_ + K * z_diff;
 	P_ = P_ - K * S*K.transpose();
 
+	//check radar rmse, drop the fault value
+
+
 	//Normalized innovation squared (NIS)
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
@@ -405,7 +411,15 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 		yaw = Xsig_pred_(3, i);
 
 		rho = sqrt(px*px + py * py);
+		if (fabs(px) < 1.0e-8)
+		{
+			px = 1.0e-8;
+		}
 		theta = atan2(py, px);
+		if (fabs(rho) < 1.0e-8)
+		{
+			rho = 1.0e-8;
+		}
 		rho_dot = (px*cos(yaw)*v + py * sin(yaw)*v) / rho;
 
 		Zsig.col(i) << rho, theta, rho_dot;
