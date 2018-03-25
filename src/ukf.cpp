@@ -99,13 +99,13 @@ UKF::UKF() {
  
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
 
-  NIS_laser = 0;
+  NIS_laser = 0.0;
 
-  NIS_radar = 0;
+  NIS_radar = 0.0;
 
-  NIS_laser_total = 0;
+  NIS_laser_total = 0.0;
 
-  NIS_radar_total = 0;
+  NIS_radar_total = 0.0;
 }
 
 UKF::~UKF() {}
@@ -385,13 +385,15 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	//Normalized innovation squared (NIS)
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
-	++NIS_laser_total;
+	NIS_laser_total=NIS_laser_total+1.0;
 	if (NIS > 5.991)
-		++NIS_laser;
-	if (NIS_laser_total > 0.00001)
 	{
-		float percent_NIS_laser = (NIS_laser / NIS_laser_total) * 100;
-		cout << percent_NIS_laser << "% Lindar NIS >5.991" << endl;
+		NIS_laser = NIS_laser + 1.0;
+		if (NIS_laser_total > 0.00001)
+		{
+			float percent_NIS_laser = (NIS_laser / NIS_laser_total) * 100;
+			cout << percent_NIS_laser << "% Lindar NIS >5.991" << endl;
+		}
 	}
 
 	//cout << "NIS is: " << NIS << endl;
@@ -518,15 +520,16 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	//Normalized innovation squared (NIS)
 	double NIS;
 	NIS = z_diff.transpose()*S.inverse()*z_diff;
-	++NIS_radar_total;
+	NIS_radar_total=NIS_radar_total+1.0;
 	if (NIS > 7.815)
-		++NIS_radar;
-	if (NIS_radar_total > 0.00001)
 	{
-		float percent_NIS_radar = (NIS_radar / NIS_radar_total)*100;
-		cout << percent_NIS_radar << "% Radar NIS >7.815" << endl;
+		NIS_radar = NIS_radar + 1.0;
+		if (NIS_radar_total > 0.00001)
+		{
+			float percent_NIS_radar = (NIS_radar / NIS_radar_total) * 100;
+			cout << percent_NIS_radar << "% Radar NIS >7.815" << endl;
+		}
 	}
-
 
 
 	//cout << "NIS is: " << NIS << endl;

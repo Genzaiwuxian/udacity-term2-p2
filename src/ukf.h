@@ -73,13 +73,13 @@ public:
 
   MatrixXd R_radar_;
 
-  int NIS_radar;
+  float NIS_radar;
 
-  int NIS_radar_total;
+  float NIS_radar_total;
 
-  int NIS_laser;
+  float NIS_laser;
 
-  int NIS_laser_total;
+  float NIS_laser_total;
 
 
 
