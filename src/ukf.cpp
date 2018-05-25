@@ -135,9 +135,9 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
 			P_ << 1.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 1.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.1, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.1, 0.0,
-				0.0, 0.0, 0.0, 0.0, 0.1;
+				0.0, 0.0, 1.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 1.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 1.0;
 		}
 		else if (meas_package.sensor_type_ == MeasurementPackage::RADAR)
 		{
@@ -151,9 +151,9 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
 			P_<< 1.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 1.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.1, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.1, 0.0,
-				0.0, 0.0, 0.0, 0.0, 0.1;
+				0.0, 0.0, 1.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 1.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 1.0;
 		}
 		time_us_ = meas_package.timestamp_;
 
