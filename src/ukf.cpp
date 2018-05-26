@@ -300,8 +300,8 @@ void UKF::Prediction(double delta_t) {
 	}
 	//cout << "x_ prediction is: " << endl;
 	//cout << x_ << endl;
-	cout << "P_ prediction is: " << endl;
-	cout << P_ << endl;
+	//cout << "P_ prediction is: " << endl;
+	//cout << P_ << endl;
 	//cout << "____________________" << endl;
 }
 
@@ -399,8 +399,8 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	//cout << "NIS is: " << NIS << endl;
 	//cout << "x_ laser update is: " << endl;
 	//cout << x_ << endl;
-	cout << "P_ laser update is: " << endl;
-	cout << P_ << endl;
+	//cout << "P_ laser update is: " << endl;
+	//cout << P_ << endl;
 	//cout << "____________________" << endl;
 }
 
@@ -535,7 +535,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	//cout << "NIS is: " << NIS << endl;
 	//cout << "x_ radar update is: " << endl;
 	//cout << x_ << endl;
-	cout << "P_ radar update is: " << endl;
-	cout << P_ << endl;
+	//cout << "P_ radar update is: " << endl;
+	//cout << P_ << endl;
 	//cout << "____________________" << endl;
 }
