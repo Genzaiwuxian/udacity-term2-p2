@@ -124,7 +124,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	if (!is_initialized_)
 	{
 		cout << "UKF: " << endl;
-		x_ << 1.0, 1.0, 1.0, 1.0, 0.1;
+		x_ << 0.0, 0.0, 0.0, 0.0, 0.0;
 		if (meas_package.sensor_type_ == MeasurementPackage::LASER)
 		{
 			float p_x, p_y;
